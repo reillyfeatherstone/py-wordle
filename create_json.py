@@ -5,8 +5,10 @@ def main():
     print("Starting...") 
     raw_dict = read_txt()
     print("File Read!")
+    print("Parsing words...")
+    parsed_dict = parse_words(raw_dict)
     print("Creating new file")
-    create_file(raw_dict)
+    create_file(parsed_dict)
     print("New file created!")
 
 
@@ -16,10 +18,19 @@ def read_txt():
     words = file.readlines()
     file.close()
 
+    return words
+
+
+def parse_words(words):
     json_dict = {}
     for word in words:
         stripped_word = word.rstrip()
-        json_dict[stripped_word] = len(stripped_word)
+        word_length = len(stripped_word)
+        
+        if word_length not in json_dict:
+            json_dict[word_length] = {}
+        key = len(json_dict[word_length])
+        json_dict[word_length][key] = stripped_word
     
     return json_dict
 
