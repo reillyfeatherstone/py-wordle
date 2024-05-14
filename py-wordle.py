@@ -30,13 +30,16 @@ def check_answer(user_guess, answer, guessed):
         print(f"Too short. Word is {len(answer)} characters.")
         return wordle(answer)
 
-    if user_guess == answer:
-        print("Congrats!")
-        return main()
-    for i in range(len(answer)):
-        if user_guess[i] == answer[i]:
-            guessed = correct_letter(i, user_guess[i], guessed)
-    return guessed
+    if read_dict(len(answer), user_guess):
+        if user_guess == answer:
+            print("Congrats!")
+            return main()
+        for i in range(len(answer)):
+            if user_guess[i] == answer[i]:
+                guessed = correct_letter(i, user_guess[i], guessed)
+        return guessed
+    print("Not a word")
+    return wordle(answer)
     
 
 def guess(length, guessed):
@@ -69,16 +72,22 @@ def pick_length():
     return length
 
 
-def read_dict(length):
+def read_dict(length, guess=None):
     path = "dictionary.json"
     f = open(path, 'r')
     dictionary = json.load(f)
     f.close()
+    
+    if guess == None:
+        try:
+            return dictionary[length]
+        except:
+            return None
 
-    try:
-        return dictionary[length]
-    except:
-        return None
+    for word in dictionary[str(length)]:
+        if dictionary[str(length)][word] == guess:
+            return True
+    return False
 
 
 def generate_word(word_length):
