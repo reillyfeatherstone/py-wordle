@@ -5,7 +5,6 @@ from random import randrange
 def main():
     length = pick_length()
     word = generate_word(length)
-    print(word)
     wordle(word)
 
 
